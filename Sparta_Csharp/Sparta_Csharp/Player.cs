@@ -24,7 +24,10 @@ namespace Sparta_Csharp
             Store = new Store();
         }
 
-        public int GetGold() => gold;
+        public int GetGold()
+        { 
+            return gold;
+        }
 
         public bool ValidPrice(int index)
         {
