@@ -41,10 +41,10 @@ namespace Sparta_Csharp
             int index = 1;
             foreach (Item item in items)
             {
-                string prefix = selectMod ? $"{index++}." : "";
+                string indexText = selectMod ? $"{index++}." : "";
                 string typeText = item.type == ItemType.Attack ? "공격력" : "방어력";
                 string priceText = item.isPurchased ? "구매완료" : $"{item.price} G";
-                Console.WriteLine($"-{prefix}{item.name}\t| {typeText} +{item.point}\t| {item.state}\t| {priceText}");
+                Console.WriteLine($"-{indexText}{item.name}\t| {typeText} +{item.point}\t| {item.state}\t| {priceText}");
             }
         }
 

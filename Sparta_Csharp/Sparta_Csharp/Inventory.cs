@@ -39,10 +39,10 @@ namespace Sparta_Csharp
             int index = 1;
             foreach (Item item in items)
             {
-                string prefix = selectMod ? $"{index++}. " : "";
+                string indexText = selectMod ? $"{index++}. " : "";
                 string selected = item.isSelected ? "[E] " : "";
                 string typeText = item.type == ItemType.Attack ? "공격력" : "방어력";
-                Console.WriteLine($"- {prefix}{selected}{item.name}\t| {typeText} +{item.point}\t| {item.state}");
+                Console.WriteLine($"- {indexText}{selected}{item.name}\t| {typeText} +{item.point}\t| {item.state}");
             }
         }
     }
