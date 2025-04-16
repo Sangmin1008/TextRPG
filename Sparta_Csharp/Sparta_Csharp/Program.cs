@@ -6,7 +6,7 @@ namespace Sparta_Csharp
     {
         private static Player player;
         
-        public static int InputCommand(int start, int end)
+        private static int InputCommand(int start, int end)
         {
             Console.WriteLine("\n원하시는 행동을 입력해주세요.");
             while (true)
@@ -54,7 +54,7 @@ namespace Sparta_Csharp
             }
         }
 
-        static void DisplayMainScene()
+        private static void DisplayMainScene()
         {
             Console.WriteLine("[메인 메뉴]");
             Console.WriteLine("1. 상태 보기");
@@ -62,7 +62,7 @@ namespace Sparta_Csharp
             Console.WriteLine("3. 상점");
         }
 
-        static void ManageInventory()
+        private static void ManageInventory()
         {
             player.Inventory.DisplayInventory(false);
             while (true)
@@ -90,7 +90,7 @@ namespace Sparta_Csharp
             }
         }
 
-        static void ManageStore()
+        private static void ManageStore()
         {
             Console.WriteLine($"\n[보유 골드] {player.GetGold()} G");
             player.Store.DisplayStore(false);
