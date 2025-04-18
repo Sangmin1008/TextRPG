@@ -10,10 +10,13 @@ namespace Sparta_Csharp
         private int attack = 10;
         private int defense = 5;
         private int health = 100;
-        private int gold = 1500;
+        private int gold = 15000;
 
         private int extraAttack = 0;
         private int extraDefense = 0;
+
+        private Item equippedWeapon;
+        private Item equippedArmor;
 
         public Inventory Inventory { get; private set; }
         public Store Store { get; private set; }
@@ -29,6 +32,16 @@ namespace Sparta_Csharp
             return gold;
         }
 
+        public void AddGold(int extraGold)
+        {
+            gold += extraGold;
+        }
+
+        public void SetHealth(int newHealth)
+        {
+            health = newHealth;
+        }
+
         public bool ValidPrice(int index)
         {
             return gold >= Store.GetItemPrice(index);
@@ -36,7 +49,7 @@ namespace Sparta_Csharp
 
         public void PurchaseItem(int index)
         {
-            Item item = Store.PurchaseItem(index);
+            Item item = Store.SellItem(index);
             Inventory.AddItem(item);
             gold -= item.price;
         }

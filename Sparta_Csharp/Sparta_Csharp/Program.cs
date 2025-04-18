@@ -31,24 +31,25 @@ namespace Sparta_Csharp
             {
                 Console.Clear();
                 DisplayMainScene();
-                int command = InputCommand(1, 3);
+                int command = InputCommand(1, 5);
 
+                Console.Clear();
                 switch (command)
                 {
                     case 1:
-                        Console.Clear();
                         player.DisplayState();
                         InputCommand(0, 0);
                         break;
-
                     case 2:
-                        Console.Clear();
                         ManageInventory();
                         break;
-
                     case 3:
-                        Console.Clear();
                         ManageStore();
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        ManageRest();
                         break;
                 }
             }
@@ -60,71 +61,139 @@ namespace Sparta_Csharp
             Console.WriteLine("1. 상태 보기");
             Console.WriteLine("2. 인벤토리 보기");
             Console.WriteLine("3. 상점");
+            Console.WriteLine("4. 던전입장");
+            Console.WriteLine("5. 휴식하기");
         }
 
         private static void ManageInventory()
         {
-            player.Inventory.DisplayInventory(false);
+            player.Inventory.DisplayInventory(false, false);
             while (true)
             {
                 Console.WriteLine("\n0. 나가기\n1. 장착 관리");
                 int input = InputCommand(0, 1);
                 if (input == 0) break;
-
-                player.Inventory.DisplayInventory(true);
+                
+                Console.Clear();
+                player.Inventory.DisplayInventory(true, false);
                 while (true)
                 {
                     Console.WriteLine("\n0. 나가기");
                     int select = InputCommand(0, player.Inventory.GetInventorySize());
                     if (select == 0)
                     {
+                        Console.Clear();
                         ManageInventory();                                    
                         return;
                     }
-
+                    
                     player.Inventory.SelectItem(select - 1);
                     player.UpdateStats();
                     Console.Clear();
-                    player.Inventory.DisplayInventory(true);
+                    player.Inventory.DisplayInventory(true, false);
                 }
             }
         }
 
         private static void ManageStore()
         {
+            Console.Clear();
             Console.WriteLine($"\n[보유 골드] {player.GetGold()} G");
             player.Store.DisplayStore(false);
-            Console.WriteLine("\n0. 나가기\n1. 아이템 구매");
+            Console.WriteLine("\n0. 나가기\n1. 아이템 구매\n2. 아이템 판매");
+            int input = InputCommand(0, 2);
+            switch (input)
+            {
+                case 0:
+                    return;
+                case 1:
+                    PurchaseItem();
+                    return;
+                case 2:
+                    SellItem();    
+                    return;
+            }
+        }
+
+        private static void PurchaseItem()
+        {
+            Console.Clear();
+            Console.WriteLine($"\n[보유 골드] {player.GetGold()} G");
+            player.Store.DisplayStore(true);
+            Console.WriteLine("\n0. 나가기");
+            while (true)
+            {
+                int select = InputCommand(0, player.Store.GetStoreSize());
+                if (select == 0)
+                {
+                    ManageStore();
+                    return;
+                }
+
+                if (player.Store.IsSoldOut(select - 1))
+                {
+                    Console.WriteLine("이미 구매한 아이템입니다.");
+                    continue;
+                }
+
+                if (!player.ValidPrice(select - 1))
+                {
+                    Console.WriteLine("Gold가 부족합니다.");
+                    continue;
+                }
+
+                player.PurchaseItem(select - 1);
+                Console.WriteLine("구매를 완료했습니다!");
+            }
+        }
+
+        private static void SellItem()
+        {
+            Console.Clear();
+            Console.WriteLine($"\n[보유 골드] {player.GetGold()} G");
+            player.Inventory.DisplayInventory(true, true);
+            Console.WriteLine("\n0. 나가기");
+            while (true)
+            {
+                int select = InputCommand(0, player.Inventory.GetInventorySize());
+                if (select == 0)
+                {
+                    ManageStore();
+                    return;
+                }
+
+                player.AddGold(player.Inventory.GetItemPrice(select - 1) * 85 / 100);
+                Item item = player.Inventory.SellItem(select - 1);
+                player.Store.PurchaseItem(item);
+                player.UpdateStats();
+                Console.Clear();
+                Console.WriteLine($"\n[보유 골드] {player.GetGold()} G");
+                player.Inventory.DisplayInventory(true, true);
+                Console.WriteLine("\n0. 나가기");
+                Console.WriteLine("판매가 완료되었습니다.");
+            }
+        }
+
+        private static void ManageRest()
+        {
+            Console.Write("500 G를 내면 체력을 회복할 수 있습니다. ");
+            Console.WriteLine($"보유골드 : {player.GetGold()} G");
+            Console.WriteLine("\n0. 나가기\n1. 휴식하기");
+
             while (true)
             {
                 int input = InputCommand(0, 1);
                 if (input == 0) break;
 
-                player.Store.DisplayStore(true);
-                Console.WriteLine("\n0. 나가기");
-                while (true)
+                if (player.GetGold() < 500)
                 {
-                    int select = InputCommand(0, player.Store.GetStoreSize());
-                    if (select == 0)
-                    {
-                        ManageStore();
-                        return;
-                    }
-
-                    if (player.Store.IsItemPurchased(select - 1))
-                    {
-                        Console.WriteLine("이미 구매한 아이템입니다.");
-                        continue;
-                    }
-
-                    if (!player.ValidPrice(select - 1))
-                    {
-                        Console.WriteLine("Gold가 부족합니다.");
-                        continue;
-                    }
-
-                    player.PurchaseItem(select - 1);
-                    Console.WriteLine("구매를 완료했습니다!");
+                    Console.WriteLine("Gold가 부족합니다.");
+                }
+                else
+                {
+                    player.SetHealth(100);
+                    player.AddGold(-500);
+                    Console.WriteLine("휴식을 완료했습니다.");
                 }
             }
         }

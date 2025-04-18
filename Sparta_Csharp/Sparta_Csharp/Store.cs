@@ -13,10 +13,22 @@ namespace Sparta_Csharp
             InitialItems();
         }
 
-        public Item PurchaseItem(int index)
+        public Item SellItem(int index)
         {
             items[index].isPurchased = true;
             return items[index];
+        }
+
+        public void PurchaseItem(Item item)
+        {
+            foreach (Item storeItem in items)
+            {
+                if (storeItem.name == item.name)
+                {
+                    storeItem.isPurchased = false;
+                    break;
+                }
+            }
         }
 
         public int GetItemPrice(int index)
@@ -24,7 +36,7 @@ namespace Sparta_Csharp
             return items[index].price;
         }
 
-        public bool IsItemPurchased(int index)
+        public bool IsSoldOut(int index)
         {
             return items[index].isPurchased;
         }
@@ -36,7 +48,7 @@ namespace Sparta_Csharp
 
         public void DisplayStore(bool selectMod)
         {
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine("\n[상점 아이템 목록]");
             int index = 1;
             foreach (Item item in items)
