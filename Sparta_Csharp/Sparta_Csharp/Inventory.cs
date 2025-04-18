@@ -19,22 +19,23 @@ namespace Sparta_Csharp
 
         public void SelectItem(int index)
         {
-            ItemType itemType = items[index].type;
+            ItemType itemType = items[index].Type;
             foreach (Item inventoryItem in items)
             {
-                if (inventoryItem.type == itemType &&
-                    items[index].name != inventoryItem.name &&
-                    inventoryItem.isSelected)
+                if (inventoryItem.Type == itemType &&
+                    items[index].Name != inventoryItem.Name &&
+                    inventoryItem.IsSelected)
                 {
-                    inventoryItem.isSelected = false;
+                    inventoryItem.IsSelected = false;
                 }
             }
-            items[index].isSelected = !items[index].isSelected;
+            items[index].IsSelected = !items[index].IsSelected;
         }
 
         public Item SellItem(int index)
         {
             Item item = items[index];
+            item.IsSelected = false;
             items.RemoveAt(index);
             return item;
         }
@@ -51,21 +52,20 @@ namespace Sparta_Csharp
 
         public int GetItemPrice(int index)
         {
-            return items[index].price;
+            return items[index].Price;
         }
 
         public void DisplayInventory(bool selectMod, bool goldVisible)
         {
-            //Console.Clear();
-            Console.WriteLine("\n[아이템 목록]");
+            Console.WriteLine("[아이템 목록]");
             int index = 1;
             foreach (Item item in items)
             {
                 string indexText = selectMod ? $"{index++}. " : "";
-                string selected = item.isSelected ? "[E] " : "";
-                string typeText = item.type == ItemType.Attack ? "공격력" : "방어력";
-                string goldText = goldVisible ? $"{item.price} G" : "";
-                Console.WriteLine($"- {indexText}{selected}{item.name}\t| {typeText} +{item.point}\t| {item.state}");
+                string selected = item.IsSelected ? "[E] " : "";
+                string typeText = item.Type == ItemType.Attack ? "공격력" : "방어력";
+                string goldText = goldVisible ? $"{item.Price} G" : "";
+                Console.WriteLine($"- {indexText}{selected}{item.Name}\t| {typeText} +{item.Point}\t| {item.State}\t| {goldText}");
             }
         }
     }

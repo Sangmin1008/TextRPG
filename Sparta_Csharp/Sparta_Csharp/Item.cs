@@ -8,21 +8,21 @@
 
     public class Item
     {
-        public string name;
-        public ItemType type;
-        public int point;
-        public bool isSelected = false;
-        public bool isPurchased = false;
-        public string state;
-        public int price;
+        public string Name { get; private set; }
+        public ItemType Type { get; private set; }
+        public int Point { get; private set; }
+        public bool IsSelected  { get; set; } = false;
+        public bool IsPurchased  { get; set; } = false;
+        public string State  { get; private set; }
+        public int Price  { get; private set; }
 
-        public Item(string _name, ItemType _type, int _point, string _state, int _price)
+        public Item(string name, ItemType type, int point, string state, int price)
         {
-            name = _name;
-            type = _type;
-            point = _point;
-            state = _state;
-            price = _price;
+            Name = name;
+            Type = type;
+            Point = point;
+            State = state;
+            Price = price;
         }
     }
 }

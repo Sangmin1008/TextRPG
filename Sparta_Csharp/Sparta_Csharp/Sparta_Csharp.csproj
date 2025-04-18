@@ -40,8 +40,14 @@
         <Reference Include="System.Xml"/>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Dungeon.cs" />
+        <Compile Include="InputCommand.cs" />
         <Compile Include="Inventory.cs" />
         <Compile Include="Item.cs" />
+        <Compile Include="Managers\DungeonManager.cs" />
+        <Compile Include="Managers\InventoryManager.cs" />
+        <Compile Include="Managers\PlayerManager.cs" />
+        <Compile Include="Managers\StoreManager.cs" />
         <Compile Include="Player.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>

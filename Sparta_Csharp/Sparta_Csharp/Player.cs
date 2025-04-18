@@ -4,19 +4,17 @@ namespace Sparta_Csharp
 {
     public class Player
     {
-        private int level = 1;
-        private string name = "Chad";
-        private string job = "전사";
-        private int attack = 10;
-        private int defense = 5;
-        private int health = 100;
-        private int gold = 15000;
+        public int Level { get; private set; } = 1;
+        public string Name { get; private set; } = "Chad";
+        public string Job { get; private set; } = "전사";
+        public float Attack { get; private set; } = 10;
+        public int Defense { get; private set; } = 5;
+        public int Health { get; private set; } = 100;
+        public int Gold { get; private set; } = 15000;
 
         private int extraAttack = 0;
         private int extraDefense = 0;
-
-        private Item equippedWeapon;
-        private Item equippedArmor;
+        
 
         public Inventory Inventory { get; private set; }
         public Store Store { get; private set; }
@@ -27,31 +25,33 @@ namespace Sparta_Csharp
             Store = new Store();
         }
 
-        public int GetGold()
-        { 
-            return gold;
-        }
-
         public void AddGold(int extraGold)
         {
-            gold += extraGold;
+            Gold += extraGold;
         }
 
         public void SetHealth(int newHealth)
         {
-            health = newHealth;
+            Health = newHealth;
         }
 
         public bool ValidPrice(int index)
         {
-            return gold >= Store.GetItemPrice(index);
+            return Gold >= Store.GetItemPrice(index);
         }
 
         public void PurchaseItem(int index)
         {
             Item item = Store.SellItem(index);
             Inventory.AddItem(item);
-            gold -= item.price;
+            Gold -= item.Price;
+        }
+
+        public void LevelUp()
+        {
+            Level += 1;
+            Attack += 0.5f;
+            Defense += 1;
         }
 
         public void UpdateStats()
@@ -61,22 +61,21 @@ namespace Sparta_Csharp
 
             foreach (var item in Inventory.GetItems())
             {
-                if (!item.isSelected) continue;
-                if (item.type == ItemType.Attack) extraAttack += item.point;
-                else extraDefense += item.point;
+                if (!item.IsSelected) continue;
+                if (item.Type == ItemType.Attack) extraAttack += item.Point;
+                else extraDefense += item.Point;
             }
         }
 
         public void DisplayState()
         {
-            Console.Clear();
-            Console.WriteLine("\n[캐릭터 상태]");
-            Console.WriteLine($"Lv\t: {level:D2}");
-            Console.WriteLine($"이름\t: {name} ({job})");
-            Console.WriteLine($"공격력\t: {attack}" + (extraAttack > 0 ? $" (+{extraAttack})" : ""));
-            Console.WriteLine($"방어력\t: {defense}" + (extraDefense > 0 ? $" (+{extraDefense})" : ""));
-            Console.WriteLine($"체력\t: {health}");
-            Console.WriteLine($"Gold\t: {gold} G\n");
+            Console.WriteLine("[캐릭터 상태]");
+            Console.WriteLine($"Lv\t: {Level:D2}");
+            Console.WriteLine($"이름\t: {Name} ({Job})");
+            Console.WriteLine($"공격력\t: {Attack}" + (extraAttack > 0 ? $" (+{extraAttack})" : ""));
+            Console.WriteLine($"방어력\t: {Defense}" + (extraDefense > 0 ? $" (+{extraDefense})" : ""));
+            Console.WriteLine($"체력\t: {Health}");
+            Console.WriteLine($"Gold\t: {Gold} G\n");
             Console.WriteLine("0. 나가기\n");
         }
     }

@@ -15,17 +15,17 @@ namespace Sparta_Csharp
 
         public Item SellItem(int index)
         {
-            items[index].isPurchased = true;
+            items[index].IsPurchased = true;
             return items[index];
         }
 
         public void PurchaseItem(Item item)
         {
-            foreach (Item storeItem in items)
+            for (int i = 0; i < items.Count; i++)
             {
-                if (storeItem.name == item.name)
+                if (items[i].Name == item.Name)
                 {
-                    storeItem.isPurchased = false;
+                    items[i].IsPurchased = false;
                     break;
                 }
             }
@@ -33,12 +33,12 @@ namespace Sparta_Csharp
 
         public int GetItemPrice(int index)
         {
-            return items[index].price;
+            return items[index].Price;
         }
 
         public bool IsSoldOut(int index)
         {
-            return items[index].isPurchased;
+            return items[index].IsPurchased;
         }
 
         public int GetStoreSize()
@@ -48,15 +48,14 @@ namespace Sparta_Csharp
 
         public void DisplayStore(bool selectMod)
         {
-            //Console.Clear();
-            Console.WriteLine("\n[상점 아이템 목록]");
+            Console.WriteLine("[상점 아이템 목록]");
             int index = 1;
             foreach (Item item in items)
             {
                 string indexText = selectMod ? $"{index++}." : "";
-                string typeText = item.type == ItemType.Attack ? "공격력" : "방어력";
-                string priceText = item.isPurchased ? "구매완료" : $"{item.price} G";
-                Console.WriteLine($"-{indexText}{item.name}\t| {typeText} +{item.point}\t| {item.state}\t| {priceText}");
+                string typeText = item.Type == ItemType.Attack ? "공격력" : "방어력";
+                string priceText = item.IsPurchased ? "구매완료" : $"{item.Price} G";
+                Console.WriteLine($"-{indexText}{item.Name}\t| {typeText} +{item.Point}\t| {item.State}\t| {priceText}");
             }
         }
 
